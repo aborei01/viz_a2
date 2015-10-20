@@ -18,7 +18,6 @@ void setup() {
  pieButton = new myButton(width/6, .92*height, 75, 35, "Pie Chart", C1);
  lineButton = new myButton(width/2, .92*height, 75, 35, "Line Chart", C1);
  barButton = new myButton(5*(width/6), .92*height, 75, 35, "Bar Chart", C1);
- 
 }
 
 void draw() {
@@ -26,10 +25,20 @@ void draw() {
  pieButton.render(); 
  lineButton.render();
  barButton.render();
+ 
+ //rectMode(CENTER);
+ //rect(300, 300, (myLine.pointSize)*10, myLine.pointSize*10,(myLine.pointSize)/.02);
+ //noLoop();
+
  if(lineButton.wasSelected && barButton.selected){
    myLine.toBarChart(myBar);
    counter++;
-    if(counter > 50) counter = 0;
+
+    if(counter >= 225) {
+     lineButton.setWasSelected(false);
+     barButton.setSelected(true);
+     counter = 0;
+    }
  }
  if(lineButton.wasSelected && pieButton.selected)
    myLine.toPieChart(myPie);
@@ -43,11 +52,16 @@ void draw() {
    myBar.toLineChart(myLine);
  if(barButton.wasSelected & pieButton.selected)
    myBar.toPieChart(myPie);
-   
- if(pieButton.selected  == true)  myPie.render();
- if(lineButton.selected == true) myLine.render();
- //if(barButton.selected  == true)  myBar.render();
  
+ if(!barButton.wasSelected && !pieButton.wasSelected && !lineButton.wasSelected){  
+   if(pieButton.selected  == true)  myPie.render();
+   if(lineButton.selected == true) myLine.render();
+   if(barButton.selected  == true)  myBar.render();
+
+ }
+ 
+ 
+
  // NEEDSWORK, THIS IS IF ALL TRANSITIONS HAVE THE SAME 
  // NUMBER OF STEPS
  //if (counter > 10) counter = 0;

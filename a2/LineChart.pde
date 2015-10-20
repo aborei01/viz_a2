@@ -25,9 +25,9 @@ class LineChart extends Chart {
     xs = new Float[data.size()];
     ys = new Float[data.size()];
     
-    x = xyAxes.x_origin;
+    x = xyAxes.x_origin + (interval/2) + (pointSize/4);
     for(int i = 0; i < len; i++){
-      y = (xyAxes.lenY + 15) - (data.get(i).val * xyAxes.lenY / xyAxes.y_max);
+      y = (xyAxes.lenY + 15) - (data.get(i).val * xyAxes.lenY / xyAxes.y_max) + (pointSize/4);
       xs[i] = x;
       ys[i] = y;
       x += interval;
@@ -41,9 +41,6 @@ class LineChart extends Chart {
     xyAxes.render();
     renderLines();
     renderPoints();
-
-
- 
   } 
   
   void renderPoints(){
@@ -67,6 +64,7 @@ class LineChart extends Chart {
     }
         
       ellipse(xs[i], ys[i], pointSize, pointSize); 
+      //println("xs["+i+"] = "+ xs[i] +", ys["+i+"] = "+ ys[i]);
     }
   }
   
@@ -83,6 +81,7 @@ class LineChart extends Chart {
     int len = data.size();
     float endX, endY;
     t = 0;
+    float radius = pointSize/2;
     
     //remove lines
     if (counter >= 0 && counter < 50){
@@ -90,35 +89,57 @@ class LineChart extends Chart {
       xyAxes.render();
       renderPoints();
       for(int i = 1; i < len; i++){
-        endX = lerp(xs[i], xs[i-1], 0.01*(50 - counter));
-        endY = lerp(ys[i], ys[i-1], 0.01*(50 - counter));
+        endX = lerp(xs[i], xs[i-1], 0.02*(50 - counter));
+        endY = lerp(ys[i], ys[i-1], 0.02*(50 - counter));
         line(xs[i], ys[i], endX, endY); 
       }
     }
-    //if (counter >= 50 && counter < 60){
-    //  fill(0);
-    //  float center = ;
-    //  float[] centers;
+    if (counter >= 50 && counter < 75){
+     fill(0);
+     int c = counter - 50;
+
+     float c_radius = lerp(radius, 0, 0.04*c);
+
+     xyAxes.render();
+     for(int i = 0; i < len; i++){
+       rectMode(CENTER);
+       rect(xs[i], ys[i], pointSize, pointSize, c_radius); 
+     }
+    }
+    if (counter >= 75 && counter < 175){
+      xyAxes.render();
+      float c = counter - 75;
+      rectMode(CORNER);
+      float hgt, corner_x, corner_y;
+      for(int i = 0; i < len; i++){
+        corner_x = xs[i] - radius;
+        corner_y = ys[i] - radius;
+        hgt = lerp(pointSize, xyAxes.y_origin - ys[i], 0.01*c); 
+
+        rect(corner_x, corner_y, pointSize, hgt); 
+      }
+    } if (counter >= 175 && counter < 225){
+        rectMode(CENTER);
+        xyAxes.render();
+        float c = counter - 175;
+        float wdt, hgt, center_x, center_y;
+        for(int i = 0; i < len; i++){
+          hgt = xyAxes.y_origin - ys[i];
+          //center_x = xs[i] + radius;
+          center_y = ys[i] + (hgt/2);
+ 
+          wdt = lerp(pointSize, myBar.bar_width, 0.02*c); 
+          rect(xs[i], center_y, wdt, hgt); 
+        }        
       
-    //  xyAxes.render();
-    //  renderPoints();
-    //  for(int i = 1; i < len; i++){
-    //    center = lerp(ys[i], xyAxes.y_origin, 0.01*(50 - counter));
-    //    line(xs[i], ys[i], endX, endY); 
-    //  }
-    //}
+    }
     
     
-    //grow point size
     
-    //turn circle to a square with very round corners
-    
-    //drop down round squares
-    
-    //turn round squares to square squares
     // set myline.wasSelected = false
   
   }
+  
     
     //function complete.
     //draw() draws the bar
