@@ -5,12 +5,16 @@ LineChart myLine;
 String path = "./data.csv";
 color C1 = color(255, 204, 0);
 
+int counter;
+
 void setup() {
  size(600, 600);
  surface.setResizable(true);
  
  parse();
  
+ counter = 0;
+
  pieButton = new myButton(width/6, .92*height, 75, 35, "Pie Chart", C1);
  lineButton = new myButton(width/2, .92*height, 75, 35, "Line Chart", C1);
  barButton = new myButton(5*(width/6), .92*height, 75, 35, "Bar Chart", C1);
@@ -18,14 +22,15 @@ void setup() {
 }
 
 void draw() {
- background(256, 256, 256);
- 
+ background(255, 255, 255);
  pieButton.render(); 
  lineButton.render();
  barButton.render();
- 
- if(lineButton.wasSelected && barButton.selected)
+ if(lineButton.wasSelected && barButton.selected){
    myLine.toBarChart(myBar);
+   counter++;
+    if(counter > 50) counter = 0;
+ }
  if(lineButton.wasSelected && pieButton.selected)
    myLine.toPieChart(myPie);
    
@@ -42,6 +47,10 @@ void draw() {
  if(pieButton.selected  == true)  myPie.render();
  if(lineButton.selected == true) myLine.render();
  //if(barButton.selected  == true)  myBar.render();
+ 
+ // NEEDSWORK, THIS IS IF ALL TRANSITIONS HAVE THE SAME 
+ // NUMBER OF STEPS
+ //if (counter > 10) counter = 0;
 }
 
 void mouseClicked() {
