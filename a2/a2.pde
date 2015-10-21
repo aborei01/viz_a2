@@ -47,9 +47,17 @@ void draw() {
    myPie.toBarChart(myBar);
  if(pieButton.wasSelected & lineButton.selected)
    myPie.toLineChart(myLine);
-   
- if(barButton.wasSelected & lineButton.selected)
+ if(barButton.wasSelected & lineButton.selected){
    myBar.toLineChart(myLine);
+   counter++;
+   if(counter >= 225) { //change this as we incrementally develop
+     barButton.setWasSelected(false);
+     lineButton.setSelected(true);
+     counter = 0;
+   }
+ }
+   
+   
  if(barButton.wasSelected & pieButton.selected)
    myBar.toPieChart(myPie);
  
@@ -127,11 +135,10 @@ void mouseClicked() {
      myLine.addDatum(row[0], val);
      myBar. addDatum(row[0], val);
    }
-   myLine.setPointSize_Intv();
-   myLine.setPoints();
-   
-   myBar.setBarWid_Intv();
-   
+   myLine.setLinePoints();
+
+   myBar.setPoints();
+   myBar.setBarWid();
  }
 
 
