@@ -60,6 +60,11 @@ void draw() {
    
  if(barButton.wasSelected & pieButton.selected)
    myBar.toPieChart(myPie);
+   counter++;
+   if(counter >= 225) {
+      barButton.setWasSelected(false);
+      counter = 0;
+   }
  
  if(!barButton.wasSelected && !pieButton.wasSelected && !lineButton.wasSelected){  
    if(pieButton.selected  == true)  myPie.render();

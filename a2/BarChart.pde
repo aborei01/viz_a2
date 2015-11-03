@@ -1,6 +1,8 @@
 class BarChart extends Chart {
   float bar_width;
 
+  
+  
   BarChart(float x, float y){
     super(x, y);
   }
@@ -85,14 +87,39 @@ void render(){
       xyAxes.render();
       myLine.renderPoints();
       for(int i = 1; i < size; i++){
-        endX = lerp(xs[i-1] + (myLine.pointSize / 2), xs[i] + (myLine.pointSize / 2), 0.02*(175 - counter));
-        endY = lerp(ys[i-1] + (myLine.pointSize / 2), ys[i] + (myLine.pointSize / 2), 0.02*(175 - counter));
+        endX = lerp(xs[i] + (myLine.pointSize / 2), xs[i-1] + (myLine.pointSize / 2), 0.02*(counter - 175));
+        endY = lerp(ys[i] + (myLine.pointSize / 2), ys[i-1] + (myLine.pointSize / 2), 0.02*(counter - 175));
         line(xs[i] + (myLine.pointSize / 2), ys[i] + (myLine.pointSize / 2), endX, endY); 
       }
     }
     
   }
   void toPieChart(PieChart pc){
-   //transition barchart to piechart 
+     // total bar heights
+     float sum_heights = 0;
+     float[] ratios = new float[ys.length];
+     
+     
+     for(int i = 0; i < ys.length; i++){
+       sum_heights += (xyAxes.y_origin - ys[i]); 
+     }
+     for(int i = 0; i < ys.length; i++){
+       ratios[i] = ys[i] / sum_heights;
+     }
+     
+     /* skinny up bars */
+     if (counter >= 0 && counter < 50){
+        rectMode(CORNER);
+        xyAxes.render();
+        float wdt, hgt;
+        
+        for(int i = 0; i < size; i++){
+          hgt = xyAxes.y_origin - ys[i];
+          wdt = lerp(myBar.bar_width, 2, 0.02*(counter)); 
+          rect(xs[i], ys[i], wdt, hgt); 
+        }  
+    }
+     
+  
   }
 }

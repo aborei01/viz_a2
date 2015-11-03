@@ -1,7 +1,7 @@
 class Chart{
  ArrayList<Datum> data;
  Axis xyAxes;
- Float[] xs, ys;
+ float[] xs, ys;
  // distance between the center of each point
  float interval;
  int size; //number of data points
@@ -17,8 +17,8 @@ class Chart{
   
   void setPoints(){
     size = data.size();
-    xs = new Float[size];
-    ys = new Float[size];
+    xs = new float[size];
+    ys = new float[size];
     float x, y;
     
     interval = xyAxes.lenX / size;
